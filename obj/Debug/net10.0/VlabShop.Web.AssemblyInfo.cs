@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VlabShop.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8af83ac28b9011cdd952ebb5b4d3470ad9cfec9f")]
 [assembly: System.Reflection.AssemblyProductAttribute("VlabShop.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VlabShop.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,78 @@
+@model VlabShop.Web.ViewModels.Cart.CartViewModel
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Shopping Cart</h1>
+    <a asp-controller="Catalogue" asp-action="Index" class="btn btn-outline-secondary">Continue shopping</a>
+</div>
+
+@if (TempData["CartError"] is string cartError)
+{
+    <div class="alert alert-warning">@cartError</div>
+}
+
+@if (Model.Items.Count == 0)
+{
+    <div class="alert alert-info">Your cart is empty.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            @if (string.IsNullOrWhiteSpace(item.ImageUrl))
+                            {
+                                <div class="bg-light text-muted d-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">No image</div>
+                            }
+                            else
+                            {
+                                <img src="@item.ImageUrl" alt="@item.Name" style="width: 72px; height: 72px; object-fit: cover;" />
+                            }
+                            <span>@item.Name</span>
+                        </div>
+                    </td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>
+                        <form asp-action="Update" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="ProductId" value="@item.ProductId" />
+                            <input type="number" name="Quantity" value="@item.Quantity" min="1" max="@item.AvailableStock" class="form-control" style="max-width: 90px;" aria-label="Quantity for @item.Name" />
+                            <button type="submit" class="btn btn-outline-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>@item.Subtotal.ToString("C")</td>
+                    <td class="text-end">
+                        <form asp-action="Remove" method="post">
+                            <input type="hidden" name="ProductId" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-end">Total</th>
+                    <th>@Model.Total.ToString("C")</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}

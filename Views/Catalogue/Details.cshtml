@@ -1,0 +1,42 @@
+@model Product
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        @if (string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <div class="d-flex align-items-center justify-content-center bg-light text-muted" style="min-height: 360px;">No image</div>
+        }
+        else
+        {
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" />
+        }
+    </div>
+    <div class="col-md-6">
+        <p class="text-muted mb-1">@Model.Category.Name</p>
+        <h1>@Model.Name</h1>
+        <p class="fs-3 fw-semibold">@Model.Price.ToString("C")</p>
+        <p>@(Model.Description ?? "No description available.")</p>
+        <p class="text-muted">@(Model.StockQuantity > 0 ? $"{Model.StockQuantity} in stock" : "Out of stock")</p>
+        @if (TempData["CartError"] is string cartError)
+        {
+            <div class="alert alert-warning">@cartError</div>
+        }
+        @if (Model.StockQuantity > 0)
+        {
+            <form asp-controller="Cart" asp-action="Add" method="post" class="mb-3">
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <div class="input-group mb-2" style="max-width: 220px;">
+                    <label for="quantity" class="input-group-text">Quantity</label>
+                    <input id="quantity" name="Quantity" type="number" min="1" max="@Model.StockQuantity" value="1" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Add to cart</button>
+            </form>
+        }
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-outline-primary">View cart</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to catalogue</a>
+    </div>
+</div>
